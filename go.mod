@@ -1,3 +1,3 @@
-module test-task/learning-go
+module test-task
 
 go 1.24.5
