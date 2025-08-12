@@ -123,7 +123,6 @@ func FsInit() bool {
 	}
 
 	if !isFileExist {
-		// add creation of file with default structure/interface
 		err := createDirectory()
 		if err != nil {
 			log.Panic(err)
