@@ -17,7 +17,7 @@ func init() {
 func main() {
 	flag.Parse()
 	if Verbose {
-		log.SetFlags(log.Ltime | log.Lshortfile)
+		log.SetFlags(log.Ltime)
 		logger.Verbose = true
 		logger.LogVerbose(false, "Verbose mod")
 	}
