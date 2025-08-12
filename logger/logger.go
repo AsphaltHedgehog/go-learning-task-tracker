@@ -1,4 +1,4 @@
-package main
+package logger
 
 import (
 	"fmt"
@@ -8,8 +8,8 @@ import (
 const grn = "\033[32m"
 const def = "\033[0m"
 
-func LogVerbose(format string, a ...interface{}) {
-	if !Verbose {
+func LogVerbose(verbose bool, isError bool, format string, a ...interface{}) {
+	if !verbose {
 		return
 	}
 

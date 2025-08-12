@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"log"
+
+	"test-task/logger"
 )
 
 var Verbose bool
@@ -15,6 +17,6 @@ func main() {
 	flag.Parse()
 	if Verbose {
 		log.SetFlags(log.Ltime | log.Lshortfile)
-		LogVerbose("Verbose mod")
+		logger.LogVerbose(Verbose, false, "Verbose mod")
 	}
 }
