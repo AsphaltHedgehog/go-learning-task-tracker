@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"test-task/logger"
+	"test-task/task"
 )
 
 var Verbose bool
@@ -20,4 +21,7 @@ func main() {
 		logger.Verbose = true
 		logger.LogVerbose(false, "Verbose mod")
 	}
+
+	isFileSystemInit := task.FsInit()
+	logger.LogVerbose(false, "Is program file system ready: %t", isFileSystemInit)
 }
