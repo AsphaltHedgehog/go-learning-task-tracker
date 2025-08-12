@@ -10,7 +10,7 @@ import (
 	"test-task/logger"
 )
 
-const path = "/AppData/Local/Temp/go-task-tracker/"
+const path = "\\AppData\\Local\\Temp\\go-task-tracker\\"
 const file = "tasks.json"
 
 func pathToFile() (string, error) {
@@ -69,7 +69,7 @@ func isValidTaskJson(path string) (bool, error) {
 }
 
 func createDirectory() error {
-	err := os.Mkdir(path, os.FileMode(0644))
+	err := os.MkdirAll(path, os.FileMode(0644))
 	if err != nil {
 		return err
 	}
