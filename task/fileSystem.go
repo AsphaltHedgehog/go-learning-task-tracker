@@ -10,7 +10,7 @@ import (
 	"test-task/logger"
 )
 
-const path = "\\AppData\\Local\\Temp\\go-task-tracker\\"
+const tempUserDir = "AppData\\Local\\Temp\\go-task-tracker"
 const file = "tasks.json"
 
 func pathToFile() (string, error) {
@@ -19,10 +19,7 @@ func pathToFile() (string, error) {
 		return "", err
 	}
 
-	pathToFile := homeDir + path + file
-
-	fmt.Print(pathToFile)
-	return pathToFile, nil
+	return filepath.Join(homeDir, tempUserDir), nil
 }
 
 func isTaskFileExist(filePath string) (bool, error) {
@@ -68,8 +65,8 @@ func isValidTaskJson(path string) (bool, error) {
 	return true, nil
 }
 
-func createDirectory() error {
-	err := os.MkdirAll(path, os.FileMode(0644))
+func createDirectory(path string) error {
+	err := os.MkdirAll(path, os.FileMode(0640))
 	if err != nil {
 		return err
 	}
@@ -95,13 +92,13 @@ func generateDefaultData() ([]byte, error) {
 	return jsonBTasks, nil
 }
 
-func createFile() error {
+func createFile(filePath string) error {
 	defaultTasksData, err := generateDefaultData()
 	if err != nil {
 		return err
 	}
 
-	err = os.WriteFile(path+file, defaultTasksData, os.FileMode(0644))
+	err = os.WriteFile(filePath, defaultTasksData, os.FileMode(0640))
 	if err != nil {
 		return err
 	}
@@ -110,12 +107,13 @@ func createFile() error {
 }
 
 func FsInit() bool {
-	filePath, err := pathToFile()
+	folderPath, err := pathToFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
 		return false
 	}
 
+	filePath := filepath.Join(folderPath, file)
 	isFileExist, err := isTaskFileExist(filePath)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
@@ -123,12 +121,12 @@ func FsInit() bool {
 	}
 
 	if !isFileExist {
-		err := createDirectory()
+		err := createDirectory(folderPath)
 		if err != nil {
 			log.Panic(err)
 			return false
 		}
-		err = createFile()
+		err = createFile(filePath)
 		if err != nil {
 			log.Panic(err)
 			return false
@@ -142,7 +140,7 @@ func FsInit() bool {
 	}
 
 	if !isFileFormatValid {
-		err := createFile()
+		err := createFile(filePath)
 		if err != nil {
 			log.Panic(err)
 			return false
