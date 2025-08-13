@@ -133,8 +133,6 @@ func FsInit() bool {
 			log.Panic(err)
 			return false
 		}
-
-		return false
 	}
 
 	isFileFormatValid, err := isValidTaskJson(filePath)
@@ -149,7 +147,6 @@ func FsInit() bool {
 			log.Panic(err)
 			return false
 		}
-		return false
 	}
 
 	return true
