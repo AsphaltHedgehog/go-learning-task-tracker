@@ -2,9 +2,10 @@ package task
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"test-task/logger"
@@ -26,6 +27,10 @@ func isTaskFileExist(filePath string) (bool, error) {
 	fileInfo, err := os.Stat(filePath)
 
 	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			logger.LogVerbose(true, "Task file does not exist")
+			return false, nil
+		}
 		return false, err
 	}
 
@@ -56,9 +61,16 @@ func isValidTaskJson(path string) (bool, error) {
 		return false, err
 	}
 
-	var task Task
-	err = json.Unmarshal(fileB, &task)
+	var tasks []Task
+	err = json.Unmarshal(fileB, &tasks)
 	if err != nil {
+		var syntaxError *json.SyntaxError
+		var typeError *json.UnmarshalTypeError
+
+		if errors.As(err, &syntaxError) || errors.As(err, &typeError) {
+			logger.LogVerbose(true, "Task file corrupted, resetting it to default state")
+			return false, nil
+		}
 		return false, err
 	}
 
