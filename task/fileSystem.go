@@ -161,3 +161,49 @@ func FsInit() bool {
 
 	return true
 }
+
+type NewTaskDraft struct {
+	Description string `json:"description"`
+	Status      Status `json:"status"`
+}
+
+func AddTask(task NewTaskDraft) (*Task, error) {
+	fileBArray, err := os.ReadFile(savedFilePath)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil, err
+	}
+
+	var tasks []Task
+
+	if err = json.Unmarshal(fileBArray, &tasks); err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil, err
+	}
+
+	lastId := tasks[len(tasks)-1].ID
+	currentTime := time.Now()
+
+	newTask := Task{
+		ID:          lastId + 1,
+		Description: task.Description,
+		Status:      task.Status,
+		CreatedAt:   currentTime,
+		UpdatedAt:   currentTime,
+	}
+
+	tasks = append(tasks, newTask)
+	updatedTasksArr, err := json.Marshal(&tasks)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil, err
+	}
+
+	err = os.WriteFile(savedFilePath, updatedTasksArr, 0644)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil, err
+	}
+
+	return &newTask, nil
+}
