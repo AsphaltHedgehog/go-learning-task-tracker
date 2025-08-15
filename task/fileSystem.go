@@ -139,12 +139,10 @@ func FsInit() bool {
 		err := createDirectory(folderPath)
 		if err != nil {
 			log.Panic(err)
-			return false
 		}
 		err = createFile(filePath)
 		if err != nil {
 			log.Panic(err)
-			return false
 		}
 	}
 
@@ -158,7 +156,6 @@ func FsInit() bool {
 		err := createFile(filePath)
 		if err != nil {
 			log.Panic(err)
-			return false
 		}
 	}
 
