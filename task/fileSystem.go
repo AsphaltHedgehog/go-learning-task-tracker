@@ -184,6 +184,23 @@ func readFile() ([]Task, error) {
 	return tasks, nil
 }
 
+func appendToArray(newElement Task, array []Task) error {
+	newArray := append(array, newElement)
+	updatedArr, err := json.Marshal(&newArray)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return err
+	}
+
+	err = os.WriteFile(savedFilePath, updatedArr, 0644)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return err
+	}
+
+	return nil
+}
+
 func AddTask(task NewTaskDraft) (*Task, error) {
 	tasks, err := readFile()
 	if err != nil {
@@ -202,8 +219,13 @@ func AddTask(task NewTaskDraft) (*Task, error) {
 		UpdatedAt:   currentTime,
 	}
 
-	tasks = append(tasks, newTask)
-	updatedTasksArr, err := json.Marshal(&tasks)
+	err = appendToArray(newTask, tasks)
+	if err != nil {
+		return nil, err
+	}
+
+	return &newTask, nil
+}
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
 		return nil, err
