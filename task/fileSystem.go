@@ -226,16 +226,47 @@ func AddTask(task NewTaskDraft) (*Task, error) {
 
 	return &newTask, nil
 }
+
+func spliceArray(itemIndex int, array []Task) error {
+	newArray := append(array[:itemIndex], array[itemIndex+1:]...)
+	updatedArr, err := json.Marshal(&newArray)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return err
+	}
+
+	err = os.WriteFile(savedFilePath, updatedArr, 0644)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func RemoveTask(id int) (Task, error) {
+	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
 		return nil, err
 	}
 
-	err = os.WriteFile(savedFilePath, updatedTasksArr, 0644)
+	var taskIndex int
+
+	for idx, task := range tasks {
+		if task.ID == id {
+			taskIndex = idx
+			break
+		}
+	}
+
+	removedTask := tasks[taskIndex]
+
+	err = spliceArray(taskIndex, tasks)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
 		return nil, err
 	}
 
-	return &newTask, nil
+	return removedTask, nil
 }
