@@ -167,7 +167,7 @@ type NewTaskDraft struct {
 	Status      Status `json:"status"`
 }
 
-func AddTask(task NewTaskDraft) (*Task, error) {
+func readFile() ([]Task, error) {
 	fileBArray, err := os.ReadFile(savedFilePath)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
@@ -177,6 +177,16 @@ func AddTask(task NewTaskDraft) (*Task, error) {
 	var tasks []Task
 
 	if err = json.Unmarshal(fileBArray, &tasks); err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil, err
+	}
+
+	return tasks, nil
+}
+
+func AddTask(task NewTaskDraft) (*Task, error) {
+	tasks, err := readFile()
+	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
 		return nil, err
 	}
