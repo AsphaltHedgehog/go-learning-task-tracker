@@ -14,6 +14,8 @@ import (
 const tempUserDir = "AppData\\Local\\Temp\\go-task-tracker"
 const file = "tasks.json"
 
+var savedFilePath string
+
 func pathToFile() (string, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
@@ -126,6 +128,7 @@ func FsInit() bool {
 	}
 
 	filePath := filepath.Join(folderPath, file)
+	savedFilePath = filePath
 	isFileExist, err := isTaskFileExist(filePath)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
