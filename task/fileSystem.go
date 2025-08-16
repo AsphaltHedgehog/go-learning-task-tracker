@@ -244,7 +244,7 @@ func spliceArray(itemIndex int, array []Task) error {
 	return nil
 }
 
-func RemoveTask(id int) (Task, error) {
+func RemoveTask(id int) (*Task, error) {
 	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
@@ -268,5 +268,5 @@ func RemoveTask(id int) (Task, error) {
 		return nil, err
 	}
 
-	return removedTask, nil
+	return &removedTask, nil
 }
