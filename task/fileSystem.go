@@ -162,6 +162,22 @@ func FsInit() bool {
 	return true
 }
 
+func overwriteArray(array []Task) error {
+	updatedArr, err := json.Marshal(&array)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return err
+	}
+
+	err = os.WriteFile(savedFilePath, updatedArr, 0644)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return err
+	}
+
+	return nil
+}
+
 type NewTaskDraft struct {
 	Description string `json:"description"`
 	Status      Status `json:"status"`
@@ -186,13 +202,8 @@ func readFile() ([]Task, error) {
 
 func appendToArray(newElement Task, array []Task) error {
 	newArray := append(array, newElement)
-	updatedArr, err := json.Marshal(&newArray)
-	if err != nil {
-		logger.LogVerbose(true, "Error: %v", err)
-		return err
-	}
 
-	err = os.WriteFile(savedFilePath, updatedArr, 0644)
+	err := overwriteArray(newArray)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
 		return err
@@ -229,13 +240,8 @@ func AddTask(task NewTaskDraft) (*Task, error) {
 
 func spliceArray(itemIndex int, array []Task) error {
 	newArray := append(array[:itemIndex], array[itemIndex+1:]...)
-	updatedArr, err := json.Marshal(&newArray)
-	if err != nil {
-		logger.LogVerbose(true, "Error: %v", err)
-		return err
-	}
 
-	err = os.WriteFile(savedFilePath, updatedArr, 0644)
+	err := overwriteArray(newArray)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
 		return err
