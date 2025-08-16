@@ -278,11 +278,6 @@ func RemoveTask(id int) (*Task, error) {
 }
 
 func UpdateTaskStatus(id int, status Status) (*Task, error) {
-	if status != StatusInProgress && status != StatusDone {
-		log.Println("New status must been a InProgress or Done")
-		return nil, nil
-	}
-
 	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
@@ -310,11 +305,6 @@ func UpdateTaskStatus(id int, status Status) (*Task, error) {
 }
 
 func UpdateTask(id int, description string, status Status) (*Task, error) {
-	if status != StatusInProgress && status != StatusDone {
-		log.Println("New status must been a InProgress or Done")
-		return nil, nil
-	}
-
 	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
