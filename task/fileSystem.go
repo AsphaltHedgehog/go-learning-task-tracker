@@ -89,7 +89,7 @@ func createDirectory(path string) error {
 
 func generateDefaultData() ([]byte, error) {
 	tasks := []Task{
-		Task{
+		{
 			ID:          1,
 			Description: "Hi, welcome to this little project, feel free to change my status, delete or use any other CLI tool :3",
 			Status:      StatusInProgress,
@@ -314,13 +314,17 @@ func UpdateTask(id int, description string, status Status) (*Task, error) {
 	var targetTask Task
 
 	for i, t := range tasks {
-		if t.ID == id {
-			tasks[i].Status = status
-			tasks[i].Description = description
-			tasks[i].UpdatedAt = time.Now()
-			targetTask = tasks[i]
-			break
+		if t.ID != id {
+			continue
 		}
+
+		if status == StatusInProgress || status == StatusDone {
+			tasks[i].Status = status
+		}
+		tasks[i].Description = description
+		tasks[i].UpdatedAt = time.Now()
+		targetTask = tasks[i]
+		break
 	}
 
 	err = overwriteArray(tasks)
