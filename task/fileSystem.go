@@ -276,3 +276,36 @@ func RemoveTask(id int) (*Task, error) {
 
 	return &removedTask, nil
 }
+
+func UpdateTaskStatus(id int, status Status) (*Task, error) {
+	if status != StatusInProgress && status != StatusDone {
+		log.Println("New status must been a InProgress or Done")
+		return nil, nil
+	}
+
+	tasks, err := readFile()
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil, err
+	}
+
+	var targetTask Task
+
+	for i, t := range tasks {
+		if t.ID == id {
+			tasks[i].Status = status
+			tasks[i].UpdatedAt = time.Now()
+			targetTask = tasks[i]
+			break
+		}
+	}
+
+	err = overwriteArray(tasks)
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil, err
+	}
+
+	return &targetTask, nil
+}
+
