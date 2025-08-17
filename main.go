@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -14,6 +13,10 @@ import (
 var Verbose bool
 
 func init() {
+	if len(os.Args) == 1 {
+		return
+	}
+
 	for _, arg := range os.Args[1:] {
 		if arg == "-v" || arg == "--verbose" {
 			Verbose = true
@@ -23,7 +26,6 @@ func init() {
 }
 
 func main() {
-	flag.Parse()
 	if Verbose {
 		log.SetFlags(log.Ltime)
 		logger.Verbose = true
@@ -32,6 +34,11 @@ func main() {
 
 	isFileSystemInit := task.FsInit()
 	logger.LogVerbose(false, "Is program file system ready: %t", isFileSystemInit)
+
+	if len(os.Args) == 1 {
+		printHelp()
+		return
+	}
 
 	switch os.Args[1] {
 	case "add":
