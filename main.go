@@ -71,15 +71,16 @@ func main() {
 		task.DeleteTool(id)
 
 	case "mark":
-		id, err := strconv.Atoi(os.Args[2])
+		id, err := strconv.Atoi(os.Args[3])
 		if err != nil {
-			fmt.Println("Input correct id", os.Args[2])
+			fmt.Println("Input correct id", os.Args[3])
 			return
 		}
-		task.UpdateStatusTool(id, os.Args[3])
+		task.UpdateStatusTool(id, os.Args[2])
 
 	case "list":
-		if len(os.Args) < 3 {
+
+		if len(os.Args) != 4 {
 			task.ListTool("")
 			break
 		}
