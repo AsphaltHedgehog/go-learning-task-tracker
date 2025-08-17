@@ -13,7 +13,12 @@ import (
 var Verbose bool
 
 func init() {
-	flag.BoolVar(&Verbose, "verbose", false, "enable verbose logging")
+	for _, arg := range os.Args[1:] {
+		if arg == "-v" || arg == "--verbose" {
+			Verbose = true
+			break
+		}
+	}
 }
 
 func main() {
@@ -69,4 +74,6 @@ func printHelp() {
 	fmt.Println("  mark in-progress [id]           		Update status to in-progress")
 	fmt.Println("  mark done [id]                  		Update status to done")
 	fmt.Println("  list empty/done/todo/in-progress   List all task or specified by status (status: todo, in-progress, done)")
+
+	fmt.Println("Use -v/--verbose for log info")
 }
