@@ -335,3 +335,13 @@ func UpdateTask(id int, description string, status Status) (*Task, error) {
 
 	return &targetTask, nil
 }
+
+func ListTasks() *[]Task {
+	tasks, err := readFile()
+	if err != nil {
+		logger.LogVerbose(true, "Error: %v", err)
+		return nil
+	}
+
+	return &tasks
+}
