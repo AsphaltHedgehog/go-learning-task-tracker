@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"test-task/logger"
 	"test-task/task"
@@ -58,7 +59,12 @@ func main() {
 		task.DeleteTool(id)
 
 	case "mark":
-		break
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Input correct id", os.Args[2])
+			return
+		}
+		task.UpdateStatusTool(id, os.Args[3])
 
 	case "list":
 		if len(os.Args) < 3 {

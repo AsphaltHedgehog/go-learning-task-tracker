@@ -27,7 +27,13 @@ func DeleteTool(id int) {
 }
 
 func UpdateStatusTool(id int, status string) {
+	updatedTask := UpdateTaskStatus(id, Status(status))
+	if updatedTask == nil {
+		fmt.Println("Task not found or unsupported status change")
+		return
+	}
 
+	fmt.Printf("[%d] %s\n    (%s)\n    Created at: %s Last update: %s\n", updatedTask.ID, updatedTask.Description, updatedTask.Status, updatedTask.CreatedAt, updatedTask.UpdatedAt)
 }
 
 func ListTool(status Status) {

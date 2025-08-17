@@ -281,11 +281,11 @@ func RemoveTask(id int) *Task {
 	return &removedTask
 }
 
-func UpdateTaskStatus(id int, status Status) (*Task, error) {
+func UpdateTaskStatus(id int, status Status) *Task {
 	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
-		return nil, err
+		return nil
 	}
 
 	var targetTask Task
@@ -302,10 +302,10 @@ func UpdateTaskStatus(id int, status Status) (*Task, error) {
 	err = overwriteArray(tasks)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
-		return nil, err
+		return nil
 	}
 
-	return &targetTask, nil
+	return &targetTask
 }
 
 func UpdateTask(id int, description string, status Status) (*Task, error) {
