@@ -6,12 +6,12 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"time"
 
 	"test-task/logger"
 )
 
-const tempUserDir = "AppData\\Local\\Temp\\go-task-tracker"
 const file = "tasks.json"
 
 var savedFilePath string
@@ -22,7 +22,14 @@ func pathToFile() (string, error) {
 		return "", err
 	}
 
-	return filepath.Join(homeDir, tempUserDir), nil
+	var folderPath string
+	if runtime.GOOS == "windows" {
+		folderPath = filepath.Join(homeDir, "AppData", "Local", "Temp", "go-task-tracker")
+	} else {
+		folderPath = filepath.Join(homeDir, ".local", "share", "go-task-tracker")
+	}
+
+	return folderPath, nil
 }
 
 func isTaskFileExist(filePath string) (bool, error) {
@@ -80,7 +87,7 @@ func isValidTaskJson(path string) (bool, error) {
 }
 
 func createDirectory(path string) error {
-	err := os.MkdirAll(path, os.FileMode(0640))
+	err := os.MkdirAll(path, os.FileMode(0755))
 	if err != nil {
 		return err
 	}
@@ -112,7 +119,7 @@ func createFile(filePath string) error {
 		return err
 	}
 
-	err = os.WriteFile(filePath, defaultTasksData, os.FileMode(0640))
+	err = os.WriteFile(filePath, defaultTasksData, os.FileMode(0755))
 	if err != nil {
 		return err
 	}
