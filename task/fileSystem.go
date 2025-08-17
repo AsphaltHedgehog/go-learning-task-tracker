@@ -212,11 +212,11 @@ func appendToArray(newElement Task, array []Task) error {
 	return nil
 }
 
-func AddTask(task NewTaskDraft) (*Task, error) {
+func AddTask(description string, status Status) *Task {
 	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
-		return nil, err
+		return nil
 	}
 
 	lastId := tasks[len(tasks)-1].ID
@@ -224,18 +224,18 @@ func AddTask(task NewTaskDraft) (*Task, error) {
 
 	newTask := Task{
 		ID:          lastId + 1,
-		Description: task.Description,
-		Status:      task.Status,
+		Description: description,
+		Status:      status,
 		CreatedAt:   currentTime,
 		UpdatedAt:   currentTime,
 	}
 
 	err = appendToArray(newTask, tasks)
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
-	return &newTask, nil
+	return &newTask
 }
 
 func spliceArray(itemIndex int, array []Task) error {

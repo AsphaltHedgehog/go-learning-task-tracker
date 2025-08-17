@@ -39,7 +39,17 @@ func main() {
 
 	switch os.Args[1] {
 	case "add":
-		break
+		if len(os.Args) < 4 {
+			printHelp()
+			break
+		}
+
+		taskDraft := task.NewTaskDraft{
+			Description: os.Args[2],
+			Status:      task.Status(os.Args[3]),
+		}
+
+		task.AddTool(taskDraft)
 
 	case "update":
 		break

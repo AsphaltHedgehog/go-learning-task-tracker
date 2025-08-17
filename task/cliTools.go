@@ -4,8 +4,10 @@ import (
 	"fmt"
 )
 
-func AddTool(description string) {
+func AddTool(draft NewTaskDraft) {
+	newTask := AddTask(draft.Description, draft.Status)
 
+	fmt.Printf("[%d] %s\n    (%s)\n    Created at: %s\n", newTask.ID, newTask.Description, newTask.Status, newTask.CreatedAt)
 }
 
 func UpdateTool(id int, description string) {
@@ -20,7 +22,7 @@ func UpdateStatusTool(id int, status string) {
 
 }
 
-func List(status Status) {
+func ListTool(status Status) {
 	tasks := ListTasks()
 	anyFound := false
 
