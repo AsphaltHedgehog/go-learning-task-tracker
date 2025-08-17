@@ -19,7 +19,7 @@ Run go build command
 go build -o task-tracker-go
 Run task-tracker-go without arguments to see all options in help section
 
-The Task consists of only five fields:
+A Task consists of only five fields:
 ID int
 Description string
 Status (todo/in-progress/done)
