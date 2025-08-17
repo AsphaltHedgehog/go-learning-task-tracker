@@ -10,8 +10,14 @@ func AddTool(draft NewTaskDraft) {
 	fmt.Printf("[%d] %s\n    (%s)\n    Created at: %s\n", newTask.ID, newTask.Description, newTask.Status, newTask.CreatedAt)
 }
 
-func UpdateTool(id int, description string) {
+func UpdateTool(id int, description string, status Status) {
+	updatedTask := UpdateTask(id, description, status)
+	if updatedTask == nil {
+		fmt.Printf("Task not found")
+		return
+	}
 
+	fmt.Printf("Updated task:\n[%d] %s\n    (%s)\n    Created at: %s Last update: %s\n", updatedTask.ID, updatedTask.Description, updatedTask.Status, updatedTask.CreatedAt, updatedTask.UpdatedAt)
 }
 
 func DeleteTool(id int) {

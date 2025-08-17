@@ -55,7 +55,12 @@ func main() {
 		task.AddTool(taskDraft)
 
 	case "update":
-		break
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Input correct id", os.Args[2])
+			return
+		}
+		task.UpdateTool(id, os.Args[3], task.Status(os.Args[4]))
 
 	case "delete":
 		id, err := strconv.Atoi(os.Args[2])
@@ -92,7 +97,7 @@ func main() {
 func printHelp() {
 	fmt.Println("Use this commands to access task-cli tool:")
 	fmt.Println("  add [description]          				Add new task with description")
-	fmt.Println("  update [id] [description, status]  Update task, can use without status argument")
+	fmt.Println("  update [id] [description] [status] Update task, can use without status argument")
 	fmt.Println("  delete [id]                     		Delete task")
 	fmt.Println("  mark in-progress [id]           		Update status to in-progress")
 	fmt.Println("  mark done [id]                  		Update status to done")

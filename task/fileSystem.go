@@ -308,11 +308,11 @@ func UpdateTaskStatus(id int, status Status) *Task {
 	return &targetTask
 }
 
-func UpdateTask(id int, description string, status Status) (*Task, error) {
+func UpdateTask(id int, description string, status Status) *Task {
 	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
-		return nil, err
+		return nil
 	}
 
 	var targetTask Task
@@ -322,9 +322,7 @@ func UpdateTask(id int, description string, status Status) (*Task, error) {
 			continue
 		}
 
-		if status == StatusInProgress || status == StatusDone {
-			tasks[i].Status = status
-		}
+		tasks[i].Status = status
 		tasks[i].Description = description
 		tasks[i].UpdatedAt = time.Now()
 		targetTask = tasks[i]
@@ -334,10 +332,10 @@ func UpdateTask(id int, description string, status Status) (*Task, error) {
 	err = overwriteArray(tasks)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
-		return nil, err
+		return nil
 	}
 
-	return &targetTask, nil
+	return &targetTask
 }
 
 func ListTasks() *[]Task {
