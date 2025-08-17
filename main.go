@@ -32,11 +32,6 @@ func main() {
 	isFileSystemInit := task.FsInit()
 	logger.LogVerbose(false, "Is program file system ready: %t", isFileSystemInit)
 
-	if len(os.Args) < 2 {
-		printHelp()
-		return
-	}
-
 	switch os.Args[1] {
 	case "add":
 		if len(os.Args) < 4 {
@@ -62,10 +57,10 @@ func main() {
 
 	case "list":
 		if len(os.Args) < 3 {
-			task.List("")
-		break
+			task.ListTool("")
+			break
 		}
-		task.List(task.Status(os.Args[2]))
+		task.ListTool(task.Status(os.Args[2]))
 
 	case "help":
 		printHelp()
