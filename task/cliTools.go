@@ -20,18 +20,6 @@ func UpdateStatusTool(id int, status string) {
 
 }
 
-func printHelp() {
-	fmt.Println("List func")
-	fmt.Println("  task-cli list [status]")
-	fmt.Println("Show all tasks or filter them by status")
-	fmt.Println("Args:  status (todo | in-progress | done)")
-	fmt.Println("Available calls:")
-	fmt.Println("  task-cli list")
-	fmt.Println("  task-cli list todo")
-	fmt.Println("  task-cli list in-progress")
-	fmt.Println("  task-cli list done")
-}
-
 func List(status Status) {
 	tasks := ListTasks()
 	anyFound := false
