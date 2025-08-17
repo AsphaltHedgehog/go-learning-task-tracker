@@ -250,14 +250,14 @@ func spliceArray(itemIndex int, array []Task) error {
 	return nil
 }
 
-func RemoveTask(id int) (*Task, error) {
+func RemoveTask(id int) *Task {
 	tasks, err := readFile()
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
-		return nil, err
+		return nil
 	}
 
-	var taskIndex int
+	var taskIndex int = -1
 
 	for idx, task := range tasks {
 		if task.ID == id {
@@ -266,15 +266,19 @@ func RemoveTask(id int) (*Task, error) {
 		}
 	}
 
+	if taskIndex == -1 {
+		return nil
+	}
+
 	removedTask := tasks[taskIndex]
 
 	err = spliceArray(taskIndex, tasks)
 	if err != nil {
 		logger.LogVerbose(true, "Error: %v", err)
-		return nil, err
+		return nil
 	}
 
-	return &removedTask, nil
+	return &removedTask
 }
 
 func UpdateTaskStatus(id int, status Status) (*Task, error) {

@@ -15,6 +15,14 @@ func UpdateTool(id int, description string) {
 }
 
 func DeleteTool(id int) {
+	removedTask := RemoveTask(id)
+
+	if removedTask == nil {
+		fmt.Printf("Task not found")
+		return
+	}
+
+	fmt.Printf("Deleted task:\n[%d] %s\n    (%s)\n    Created at: %s Last update: %s\n", removedTask.ID, removedTask.Description, removedTask.Status, removedTask.CreatedAt, removedTask.UpdatedAt)
 
 }
 

@@ -50,7 +50,12 @@ func main() {
 		break
 
 	case "delete":
-		break
+		id, err := strconv.Atoi(os.Args[2])
+		if err != nil {
+			fmt.Println("Input correct id", os.Args[2])
+			return
+		}
+		task.DeleteTool(id)
 
 	case "mark":
 		break
